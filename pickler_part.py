@@ -50,11 +50,6 @@ compatible_formats = ["1.0",            # Original protocol 0
 # know how to read.
 HIGHEST_PROTOCOL = 2
 
-# Why use struct.pack() for pickling but marshal.loads() for
-# unpickling?  struct.pack() is 40% faster than marshal.dumps(), but
-# marshal.loads() is twice as fast as struct.unpack()!
-mloads = marshal.loads
-
 class PickleError(Exception):
     """A common base class for the other pickling exceptions."""
     pass
@@ -66,16 +61,6 @@ class PicklingError(PickleError):
     """
     pass
 
-class UnpicklingError(PickleError):
-    """This exception is raised when there is a problem unpickling an object,
-    such as a security violation.
-
-    Note that other exceptions may also be raised during unpickling, including
-    (but not necessarily limited to) AttributeError, EOFError, ImportError,
-    and IndexError.
-
-    """
-    pass
 
 # An instance of _Stop is raised by Unpickler.load_stop() in response to
 # the STOP opcode, passing the object that is the result of unpickling.

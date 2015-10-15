@@ -531,11 +531,15 @@ class Unpickler:
         return klass
 
     def load_reduce(self):
+        # 所有的参数已经合并成为一个tuple, 然后stack顶部为: func, params tuple, 执行完毕之后func被结果替代
         stack = self.stack
         args = stack.pop()
         func = stack[-1]
         value = func(*args)
         stack[-1] = value
+
+        # 例如: user = model_unpickle(User, [], django.db.models.base.simple_class_factory)
+        #       (model_unpickle, (model, defers, factory), data)
     dispatch[REDUCE] = load_reduce
 
     def load_pop(self):
@@ -614,18 +618,27 @@ class Unpickler:
     dispatch[SETITEMS] = load_setitems
 
     def load_build(self):
+        # 调用目标对象的_setstate_
         stack = self.stack
         state = stack.pop()
         inst = stack[-1]
+
+        # 1. 如果有 __setstate__, 则直接调用 __setstate__
         setstate = getattr(inst, "__setstate__", None)
         if setstate:
             setstate(state)
             return
+
+        # 2. 两种state
+        #    slotstate, state
         slotstate = None
         if isinstance(state, tuple) and len(state) == 2:
             state, slotstate = state
+
+
         if state:
             try:
+                # 直接将state中的数据拷贝到: __dict__中
                 d = inst.__dict__
                 try:
                     for k, v in state.iteritems():
@@ -647,6 +660,8 @@ class Unpickler:
                 # loop over state.items().
                 for k, v in state.items():
                     setattr(inst, k, v)
+        # slotstate
+        # 属性不是通过__dict__来表示的
         if slotstate:
             for k, v in slotstate.items():
                 setattr(inst, k, v)
