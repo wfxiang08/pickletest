@@ -1,0 +1,115 @@
+cdjango.db.models.base
+model_unpickle
+--> load_global --> stack[0] = django.db.models.base.model_unpickle
+
+p0
+--> memo["0"] = django.db.models.base.model_unpickle
+
+(cdjango.contrib.auth.models
+User
+--> stack[1] = self.mark
+    stack[2] = django.contrib.auth.models.User
+p1
+--> memo["1"] = django.contrib.auth.models.User
+
+(lp2
+--> stack[3] = self.mark
+    memo["2"] = self.mark
+
+cdjango.db.models.base
+simple_class_factory
+--> stack[4] = django.db.models.base.simple_class_factory
+
+p3
+--> memo["3"] = django.db.models.base.simple_class_factory
+
+tp4
+
+--> make tuple
+    stack[3] = (django.db.models.base.simple_class_factory, )
+    memo["4"] = (django.db.models.base.simple_class_factory, )
+
+Rp5
+--> load_reduce
+    stack[-1](stack.pop())
+    user = django.contrib.auth.models.User(django.db.models.base.simple_class_factory)
+    stack[2] = user
+    memo["5"] = user
+
+
+(dp6
+--> stack[3] = self.mark      # "(" means mark
+--> d: 从上一个mark开始构建一个dict, 这里应该是一个空的dict
+    stack[3] = {}
+--> memo["6"] = {}
+
+S'_state'
+--> stack[4] = "_state"
+
+p7
+--> memo["7"] = "_state"
+
+ccopy_reg
+_reconstructor
+--> stack[5] = copy_reg._reconstructor
+
+p8
+--> memo["8"] = copy_reg._reconstructor
+
+(cdjango.db.models.base
+ModelState
+--> stack[6] = self.mark
+--> stack[7] = django.db.models.base.ModelState
+
+p9
+--> memo["9"] = django.db.models.base.ModelState
+
+c__builtin__
+object
+--> stack[8] = __builtin__.object
+
+p10
+--> memo["10"] = __builtin__.object
+
+Ntp11
+--> stack[9] = None
+--> t(TUPLE) ---> stack[6] = (django.db.models.base.ModelState, __builtin__.object, None)
+
+Rp12
+--> copy_reg._reconstructor(django.db.models.base.ModelState, __builtin__.object, None)
+    stack[5] = 上面的结果
+    memo["12"] = 上面的结果 state
+(dp13
+--> stack[6] = self.mark
+    stack[6] = {}
+    memo["13"] = {}
+
+S'adding'
+--> stack[7] = "adding"
+p14
+--> memo["14"] = "adding"
+
+I01
+--> stack[8] = True
+
+sS'db'
+--> s ==> stack[6] = {"adding": True}
+    stack[7] = "db"
+p15
+--> memo["15"] = "db"
+
+NsbsS'id'
+--> N: stack[8] = None
+--> s: stack[6] = {"adding": True, "db": None}
+--> BUILD           = 'b'   # call __setstate__ or __dict__.update()
+    state.__setstate_({"adding": True, "db": None})
+
+p16
+--> memo["16"] = state
+I1
+--> stack[6] = 1
+sb.
+--> stack[3] = {"_state": state}
+--> user.__setstate__(stack)
+    stack[2] = user
+None
